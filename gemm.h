@@ -14,6 +14,11 @@ struct saxpyFunc : public Xbyak::CodeGenerator {
 //      RCX - M
 //      R8  - N
 
+// Regsters that need to be preserved: RBX,RBP, R12-R15
+
+    push(rbx);
+    push(r15);
+
     mov(r11,rdi);
     xor(r15,r15);
     L("for_j");
@@ -21,23 +26,27 @@ struct saxpyFunc : public Xbyak::CodeGenerator {
 
       // Y[i] += A[i*n+j]*X[j]
       xor(rbx,rbx);
-      xor(r14,r14);
+      xor(r10,r10);
       L("for_i");
         mov(eax, ptr[r11 + rbx*4]);
-        mov(r12d, ptr[rsi + rbx*4]);
-        //imul(r13, r12d,eax) // r13d should contina full result
-        imul(eax, r12d); // r13d should contina full result
-        add(r14,rax);       // accumulate 
+        mov(r9d, ptr[rsi + rbx*4]);
+        //imul(r13, r9d,eax) // r13d should contina full result
+        imul(eax, r9d); // r13d should contina full result
+        add(r10,rax);       // accumulate 
         inc(rbx);
         cmp(rbx,r8);
         jnz("for_i");
-      add(ptr [rdx + r15*4], r14d);
+      add(ptr [rdx + r15*4], r10d);
       mov(rax,r8);
       shl(rax,2);
       add(r11,rax);  // Go to next column                
       inc(r15);     // Next output element
       dec(rcx);
       jnz("for_j");
+
+
+      pop(r15);
+      pop(rbx);
 
       printf("generating code\n");
 #else
