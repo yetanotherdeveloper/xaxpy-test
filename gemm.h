@@ -89,6 +89,7 @@ struct saxpyFunc : public Xbyak::CodeGenerator {
 
   L("for_j");
     vxorps(ymm3,ymm3);  // 8 partial sums of multiplication
+    xor(rbx,rbx);
     L("for_i");
       vmovups(ymm1,ptr [rdi + rax]);  // A
       vmovups(ymm0,ptr [rsi + rbx*4]);  // X

@@ -71,8 +71,8 @@ int main()
       }
     }
 
-    printf("IGEMM C++ code execution time: %lld\n", cppDelta);
-    printf("IGEMM ASM code execution time: %lld\n", asmDelta);
+    printf("IAXPY C++ code execution time: %lld\n", cppDelta);
+    printf("IAXPY ASM code execution time: %lld\n", asmDelta);
 
     A.reset(nullptr);
     X.reset(nullptr);
@@ -98,16 +98,16 @@ int main()
       fY2[i] = 10.0f*i;
     }
 
+    saxpyFunc saxpy_code;
+    void (*saxpy_func)(const float*,const float*, float*, int, int) = (void (*)(const float *A,const float *x, float *y, int m, int n))saxpy_code.getCode();
+
     // Call reference C++ GEMM routine
     t0 = __rdtsc();
     saxpy(fA.get(),fX.get(),fY1.get(),m,n);
     t1 =  __rdtsc();
     cppDelta = t1-t0;
 
-    printf("SGEMM C++ code execution time: %lld\n", cppDelta);
-
-    saxpyFunc saxpy_code;
-    void (*saxpy_func)(const float*,const float*, float*, int, int) = (void (*)(const float *A,const float *x, float *y, int m, int n))saxpy_code.getCode();
+    printf("SAXPY C++ code execution time: %lld\n", cppDelta);
 
     // Call Assembly routine
     t0 = __rdtsc();
@@ -115,5 +115,6 @@ int main()
     t1 =  __rdtsc();
 
     asmDelta = t1-t0;
+    printf("SAXPY ASM code execution time: %lld\n", asmDelta);
 }
 
