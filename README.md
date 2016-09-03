@@ -2,7 +2,7 @@
 
 Simple test to compare efficency of BLAS IAXPY and SAXPY written in C++ vs Assembly implementations
 
-Assembly routines are using Just In Time Assembly (Assembly generated in runtime) project [Xbyak](https://github.com/yetanotherdeveloper/xaxpy-test/)
+Assembly routines are using Just In Time Assembly (Assembly generated in runtime) project [Xbyak](https://github.com/herumi/xbyak)
 
 ## Installation notes
 As xaxpy-test rely on xbyak project, this repo has xbyak added as git submodule. To have xbyak checked out next to xaxpy-test please please use following command:
