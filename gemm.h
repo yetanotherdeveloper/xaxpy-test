@@ -81,6 +81,8 @@ struct saxpyFunc : public Xbyak::CodeGenerator {
     printf("AVX2 not detected!\n");
   }
 
+  shl (rcx,2);  // num of Output elements * size of float (4)
+
   push(rbx);
 
   xor(rax,rax);
@@ -111,7 +113,7 @@ struct saxpyFunc : public Xbyak::CodeGenerator {
     lea (r9,ptr [r9+r8*4]); // jump to next raw
     mov(rax,r9);
 
-    add(r10,1);
+    add(r10,4);
     cmp(r10,rcx);
     jnz("for_j");
   

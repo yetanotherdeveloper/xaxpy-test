@@ -82,12 +82,14 @@ int main()
     std::unique_ptr<float[]> fA(new float[m*n]);    
     for(int i=0; i<m*n; ++i) {
       fA[i] = i;
+      //fA[i] = 1.0f;
     }
     
     // X vector    
     std::unique_ptr<float[]> fX(new float[n]);    
     for(int i=0; i<n; ++i) {
       fX[i] = 2.0f*i;
+      //fX[i] = 1.0f;
     }
 
     // Y output vector
@@ -116,5 +118,14 @@ int main()
 
     asmDelta = t1-t0;
     printf("SAXPY ASM code execution time: %lld\n", asmDelta);
+    
+    // Due to floats nature both multiplication algorithms
+    // won't give exact values
+    for(unsigned int i=0; i<m; ++i) {
+      if((fY1[i] - fY2[i])/fY1[i] > 0.001f) {
+        printf("ERROR in computation!\n");
+        exit(-1);        
+      }
+    }
 }
 
